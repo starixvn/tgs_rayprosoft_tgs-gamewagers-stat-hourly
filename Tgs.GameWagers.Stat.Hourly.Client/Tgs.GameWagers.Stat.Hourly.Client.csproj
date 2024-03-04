@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<Authors>Raypro</Authors>
 		<PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-gamewagers-stat-hourly</PackageProjectUrl>
 		<RepositoryUrl>https://gitlab.com/rayprosoft/tgs-gamewagers-stat-hourly.git</RepositoryUrl>
@@ -28,7 +28,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tgs.GameWagers.Stat.Hourly.Common\Tgs.GameWagers.Stat.Hourly.Common.csproj">
-			<Aliases>all</Aliases>
+			<Aliases></Aliases>
+			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 
