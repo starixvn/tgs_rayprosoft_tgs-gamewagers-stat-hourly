@@ -53,27 +53,20 @@ internal class StatHourlyZoneCloseCommandService(
 		}
 		finally
 		{
-			var message = new GameWagersStatHourlyFinishMessage
-			{
-				ResellerId = command.ResellerId,
-				ResellerCode = command.ResellerCode,
-				LicenseeId = command.LicenseeId,
-				LicenseeCode = command.LicenseeCode,
-				BrandId = command.BrandId,
-				BrandCode = command.BrandCode,
-				TimeSpanMinutes = command.TimeSpanMinutes,
-				StartOn = StartOn.ToTimestamp(),
-				EndOn = EndOn.ToTimestamp()
-			};
-
-			logger.LogInformation("LogOn:{logOn} Subject:{subject} Message:The content of this message.({message})",
-				DateTime.Now.ToString("u"),
-				GameWagersStatHourlyNatsConst.StatHourlyCloseZoneFinish,
-				message);
-
 			await messageSender.PublishAsync(
 				subject: GameWagersStatHourlyNatsConst.StatHourlyCloseZoneFinish,
-				data: message,
+				data: new GameWagersStatHourlyFinishMessage
+				{
+					ResellerId = command.ResellerId,
+					ResellerCode = command.ResellerCode,
+					LicenseeId = command.LicenseeId,
+					LicenseeCode = command.LicenseeCode,
+					BrandId = command.BrandId,
+					BrandCode = command.BrandCode,
+					TimeSpanMinutes = command.TimeSpanMinutes,
+					StartOn = StartOn.ToTimestamp(),
+					EndOn = EndOn.ToTimestamp()
+				},
 				cancellationToken: cancellationToken)
 				.ConfigureAwait(false);
 		}
