@@ -5,7 +5,7 @@ import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "Tgs.GameWagers.Stat.Hourly.Common.Protos";
 
-package GameWagersStatHourlyNatsConst;
+package GameWagersStatHourlyCommon;
 
 message GameWagersStatHourlyMessage {
     // 總公司識別碼
