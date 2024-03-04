@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Google.Protobuf.WellKnownTypes;
+
+using Microsoft.Extensions.Logging;
+
+using Tgs.GameWagers.Stat.Hourly.Common;
+
+using Tgs.GameWagers.Stat.Hourly.Common.Protos;
 
 using Tgs.ServiceUtility;
 using Valhalla.MessageQueue;
-using Tgs.GameWagers.Stat.Hourly.Common.Protos;
-using Google.Protobuf.WellKnownTypes;
-using Tgs.GameWagers.Stat.Hourly.Common;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.JobApplicationServices;
 

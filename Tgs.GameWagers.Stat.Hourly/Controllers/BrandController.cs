@@ -3,6 +3,7 @@ using Tgs.GameWagers.Stat.Hourly.Core;
 using Tgs.GameWagers.Stat.Hourly.Core.Models;
 
 namespace Tgs.GameWagers.Stat.Hourly.Controllers;
+
 [Route("[controller]")]
 [ApiController]
 public class BrandController : ControllerBase

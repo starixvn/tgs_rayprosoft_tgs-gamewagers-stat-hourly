@@ -4,7 +4,6 @@ using NSubstitute;
 using Tgs.GameWagers.Stat.Hourly.Common;
 using Tgs.GameWagers.Stat.Hourly.Common.Protos;
 using Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
-using Tgs.ServiceUtility;
 using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest.ApplicationServices;

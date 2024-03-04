@@ -3,15 +3,16 @@ using System.Text.Json.Serialization;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NATS.Client.Core;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Tgs.MessageQueue.Nats.Serializers;
-using Tgs.GameWagers.Stat.Hourly.Messages;
-using Tgs.GameWagers.Stat.Hourly.Common;
-using Microsoft.EntityFrameworkCore;
 using Tgs.GameWagers.Stat.Hourly;
+
+using Tgs.GameWagers.Stat.Hourly.Common;
+using Tgs.GameWagers.Stat.Hourly.Messages;
+using Tgs.MessageQueue.Nats.Serializers;
 
 var filterInstrumentations = new[] { "html", "ico", "png", "jpg" };
 

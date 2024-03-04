@@ -4,6 +4,7 @@ using Tgs.GameWagers.Stat.Hourly.Core.Models;
 using Tgs.GameWagers.Stat.Hourly.Entities;
 
 namespace Tgs.GameWagers.Stat.Hourly.Repositories;
+
 internal class BrandRepository(
 	TgsContext context) : IBrandRepository
 {

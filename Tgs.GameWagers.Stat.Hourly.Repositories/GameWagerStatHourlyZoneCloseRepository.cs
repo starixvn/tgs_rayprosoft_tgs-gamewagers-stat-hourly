@@ -6,6 +6,7 @@ using Tgs.GameWagers.Stat.Hourly.Core;
 using Tgs.GameWagers.Stat.Hourly.Entities;
 
 namespace Tgs.GameWagers.Stat.Hourly.Repositories;
+
 internal class GameWagerStatHourlyZoneCloseRepository(
 	ILogger<GameWagerStatCloseRepository> logger,
 	IDbConnection connection,
@@ -24,6 +25,7 @@ internal class GameWagerStatHourlyZoneCloseRepository(
 
 		context.ChangeTracker.Clear();
 	}
+
 	public async ValueTask InsertBatchAsync(Guid brandId, DateTimeOffset startOn, DateTimeOffset endOn, CancellationToken cancellationToken = default)
 	{
 		DynamicParameters parameters = new DynamicParameters();

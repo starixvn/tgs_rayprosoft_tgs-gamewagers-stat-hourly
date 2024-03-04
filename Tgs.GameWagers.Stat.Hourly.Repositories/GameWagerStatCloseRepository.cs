@@ -3,6 +3,7 @@ using Tgs.GameWagers.Stat.Hourly.Core;
 using Tgs.GameWagers.Stat.Hourly.Entities;
 
 namespace Tgs.GameWagers.Stat.Hourly.Repositories;
+
 internal class GameWagerStatCloseRepository(
 	TgsContext context) : IGameWagerStatCloseRepository
 {
