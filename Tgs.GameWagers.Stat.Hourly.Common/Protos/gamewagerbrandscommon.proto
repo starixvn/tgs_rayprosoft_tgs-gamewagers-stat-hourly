@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+import "phoenix/protobuf/guid.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Tgs.GameWagers.Stat.Hourly.Common.Protos";
+
+package GameWagersStatHourlyNatsConst;
+
+message GameWagersStatHourlyMessage {
+    // 總公司識別碼
+    phoenix.protobuf.GuidValue reseller_id = 1;
+    // 總公司代碼
+    string reseller_code = 2;
+    // 公司識別碼
+    phoenix.protobuf.GuidValue licensee_id = 3;
+    // 公司代碼
+    string licensee_code = 4;
+    // 平台識別碼
+    phoenix.protobuf.GuidValue brand_id = 5;
+    // 平台代碼
+    string brand_code = 6;
+    // 時間跨度分鐘
+    int32 time_span_minutes = 7;
+    // 起始時間
+    google.protobuf.Timestamp start_on = 8;
+    // 結束時間
+    google.protobuf.Timestamp end_on = 9;
+}
+
+message GameWagersStatHourlyFinishMessage {
+    // 總公司識別碼
+    phoenix.protobuf.GuidValue reseller_id = 1;
+    // 總公司代碼
+    string reseller_code = 2;
+    // 公司識別碼
+    phoenix.protobuf.GuidValue licensee_id = 3;
+    // 公司代碼
+    string licensee_code = 4;
+    // 平台識別碼
+    phoenix.protobuf.GuidValue brand_id = 5;
+    // 平台代碼
+    string brand_code = 6;
+    // 時間跨度分鐘
+    int32 time_span_minutes = 7;
+    // 起始時間
+    google.protobuf.Timestamp start_on = 8;
+    // 結束時間
+    google.protobuf.Timestamp end_on = 9;
+}

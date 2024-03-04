@@ -1,0 +1,25 @@
+﻿using System.Text.Json.Nodes;
+using Microsoft.Extensions.Options;
+using StackExchange.Redis;
+using Tgs.GameWagers.Stat.Hourly.Core;
+
+namespace Tgs.GameWagers.Stat.Hourly.Core;
+
+internal class HangfireLock(
+	IDatabase database) : IHangfireLock
+{
+	public Task<bool> LockingAsync(string application, CancellationToken cancellationToken = default)
+			=> database.StringSetAsync(
+			key: GetKey(application),
+			value: new JsonObject
+			{
+				["MachineName"] = Environment.MachineName,
+				["Application"] = application,
+				["LabelTime"] = DateTimeOffset.Now
+			}.ToJsonString(),
+			expiry: TimeSpan.FromSeconds(59),
+			when: When.NotExists);
+
+	private static string GetKey(string application)
+		=> string.Concat("gamewagers-brand-locking:hangfire:", application);
+}

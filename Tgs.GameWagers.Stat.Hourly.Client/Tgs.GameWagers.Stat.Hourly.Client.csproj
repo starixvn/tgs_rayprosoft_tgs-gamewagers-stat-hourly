@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Version>1.0.0</Version>
+		<Authors>Raypro</Authors>
+		<PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-gamewagers-stat-hourly</PackageProjectUrl>
+		<RepositoryUrl>https://gitlab.com/rayprosoft/tgs-gamewagers-stat-hourly.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RootNamespace>Tgs.GameWagers.Stat.Hourly.Client</RootNamespace>
+		<PackageId>Tgs.GameWagers.Stat.Hourly.Client</PackageId>
+		<Title>Tgs.GameWagers.Stat.Hourly.Client</Title>
+		<Description>Tgs.GameWagers.Stat.Hourly.Client</Description>
+		<PackageTags>Tgs GameWagers Stat Hourly Client</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="PhoenixToolkits.NuGet.BuildTools" Version="0.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tgs.GameWagers.Stat.Hourly.Common\Tgs.GameWagers.Stat.Hourly.Common.csproj">
+			<Aliases>all</Aliases>
+		</ProjectReference>
+	</ItemGroup>
+
+</Project>
