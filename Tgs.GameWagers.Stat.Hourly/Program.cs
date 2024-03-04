@@ -59,7 +59,7 @@ builder
 		var connectionString = builder.Configuration.GetConnectionString("Redis")!;
 		var options = new RedisStorageOptions
 		{
-			Prefix = "gamewagers-brand-schedule:hangfire:"
+			Prefix = "gamewagers-stat-hourly-schedule:hangfire:"
 		};
 		_ = config
 		.UseRedisStorage(connectionString, options)

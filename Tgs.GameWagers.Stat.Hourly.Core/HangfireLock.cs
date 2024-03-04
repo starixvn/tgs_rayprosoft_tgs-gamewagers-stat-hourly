@@ -21,5 +21,5 @@ internal class HangfireLock(
 			when: When.NotExists);
 
 	private static string GetKey(string application)
-		=> string.Concat("gamewagers-brand-locking:hangfire:", application);
+		=> string.Concat("gamewagers-stat-hourly-locking:hangfire:", application);
 }
