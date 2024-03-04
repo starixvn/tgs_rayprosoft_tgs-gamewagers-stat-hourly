@@ -31,7 +31,7 @@ internal class JobExecuteCommandService(
 			BrandId = command.BrandId,
 			BrandCode = command.BrandCode,
 			TimeSpanMinutes = command.TimeSpanMinutes,
-			StartOn = statOn.AddHours(-1).ToTimestamp(),
+			StartOn = statOn.AddMinutes(-5).ToTimestamp(),
 			EndOn = statOn.ToTimestamp()
 		};
 

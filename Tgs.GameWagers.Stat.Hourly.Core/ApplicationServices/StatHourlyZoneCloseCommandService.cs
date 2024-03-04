@@ -17,6 +17,12 @@ internal class StatHourlyZoneCloseCommandService(
 	public async ValueTask ExecuteAsync(StatHourlyZoneCloseCommand command, CancellationToken cancellationToken = default)
 	{
 		var (StartOn, EndOn) = statisticalTimeUtnsil.GetTimeZoneHour(command.StartOn, command.EndOn, command.TimeSpanMinutes);
+		logger.LogInformation("LogOn:{logOn} StartOn:{startOn} EndOn:{endOn} TimeSpanMinutes:{timeSpanMinutes} Command:{command}",
+			DateTime.Now.ToString("u"),
+			StartOn,
+			EndOn,
+			command.TimeSpanMinutes,
+			command);
 		try
 		{
 			if (await gameWagerStatClosesRepository.ExistAsync(
