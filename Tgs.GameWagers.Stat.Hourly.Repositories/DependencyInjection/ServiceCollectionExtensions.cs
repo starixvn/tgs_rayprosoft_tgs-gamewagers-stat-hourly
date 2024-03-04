@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
 			var context = sp.GetRequiredService<TgsContext>();
 			return (NpgsqlConnection)context.Database.GetDbConnection();
 		})
+		.AddTransient<IBrandRepository, BrandRepository>()
 		.AddTransient<IGameWagerStatCloseRepository, GameWagerStatCloseRepository>()
 		.AddTransient<IGameWagerStatHourlyCloseRepository, GameWagerStatHourlyCloseRepository>()
 		.AddTransient<IGameWagerStatHourlyZoneCloseRepository, GameWagerStatHourlyZoneCloseRepository>();
