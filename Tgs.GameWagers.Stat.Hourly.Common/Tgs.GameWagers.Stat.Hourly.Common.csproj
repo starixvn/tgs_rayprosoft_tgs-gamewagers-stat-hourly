@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Protos\gamewagerbrandscommon.proto" />
+	  <None Remove="Protos\GameWagersStatHourlyCommon.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Protobuf Include="Protos\gamewagerbrandscommon.proto" GrpcServices="None" />
+	  <Protobuf Include="Protos\GameWagersStatHourlyCommon.proto" GrpcServices="None" />
 	</ItemGroup>
 
 </Project>
