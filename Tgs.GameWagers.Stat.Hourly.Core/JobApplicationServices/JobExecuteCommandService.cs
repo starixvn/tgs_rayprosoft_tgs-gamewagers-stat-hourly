@@ -20,7 +20,7 @@ internal class JobExecuteCommandService(
 	public ValueTask ExecuteAsync(JobExecuteCommand command, CancellationToken cancellationToken = default)
 	{
 		var currentTime = timeProvider.GetUtcNow();
-		var (StartOn, EndOn) = utnsil.GetTimeZoneHour(currentTime);
+		var statOn = utnsil.GetStatOn(currentTime, 480);
 
 		var message = new GameWagersStatHourlyMessage
 		{
@@ -31,8 +31,8 @@ internal class JobExecuteCommandService(
 			BrandId = command.BrandId,
 			BrandCode = command.BrandCode,
 			TimeSpanMinutes = command.TimeSpanMinutes,
-			StartOn = StartOn.ToTimestamp(),
-			EndOn = EndOn.ToTimestamp()
+			StartOn = statOn.AddHours(-1).ToTimestamp(),
+			EndOn = statOn.ToTimestamp()
 		};
 
 		logger.LogInformation("LogOn:{logOn} Message:The content of this message.({message})", DateTime.Now.ToString("u"), message);

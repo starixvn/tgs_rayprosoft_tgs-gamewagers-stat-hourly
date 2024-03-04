@@ -5,69 +5,25 @@ namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest;
 public class StatisticalTimeUtnsilUnitTest
 {
 	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_09_54_08()
+	public void Get_StatOn_24_03_04_15_56_33_08()
 	{
 		var sut = new StatisticalTimeUtnsil();
 
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T09:54:00+08:00"), 480);
+		var source = new DateTimeOffset(2024, 03, 04, 15, 56, 33, TimeSpan.FromHours(+8));
+		var statOn = sut.GetStatOn(source, 480);
 
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T09:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T10:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
+		Assert.Equal(new DateTimeOffset(2024, 03, 04, 15, 55, 00, TimeSpan.FromHours(+8)), statOn);
 	}
 
 	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_09_55_08()
+	public void Get_StatOn_24_03_04_15_56_33_00()
 	{
 		var sut = new StatisticalTimeUtnsil();
 
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T09:55:00+08:00"), 480);
+		var source = new DateTimeOffset(2024, 03, 04, 15, 56, 33, TimeSpan.FromHours(0));
+		var statOn = sut.GetStatOn(source, 480);
 
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T09:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T11:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
-	}
-
-	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_09_56_08()
-	{
-		var sut = new StatisticalTimeUtnsil();
-
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T09:56:00+08:00"), 480);
-
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T09:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T11:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
-	}
-
-	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_10_01_08()
-	{
-		var sut = new StatisticalTimeUtnsil();
-
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T10:01:00+08:00"), 480);
-
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T10:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T11:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
-	}
-
-	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_10_31_08()
-	{
-		var sut = new StatisticalTimeUtnsil();
-
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T10:31:00+08:00"), 480);
-
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T10:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T11:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
-	}
-
-	[Fact]
-	public void Get_TimeZone_Hour_23_11_21_10_59_08()
-	{
-		var sut = new StatisticalTimeUtnsil();
-
-		var (StartOn, EndOn) = sut.GetTimeZoneHour(DateTimeOffset.Parse("2023-11-21T10:59:00+08:00"), 480);
-
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T10:00:00+08:00").UtcDateTime, StartOn.UtcDateTime);
-		Assert.Equal(DateTimeOffset.Parse("2023-11-21T12:00:00+08:00").UtcDateTime, EndOn.UtcDateTime);
+		Assert.Equal(new DateTimeOffset(2024, 03, 04, 23, 55, 00, TimeSpan.FromHours(+8)), statOn);
 	}
 
 	[Fact]
