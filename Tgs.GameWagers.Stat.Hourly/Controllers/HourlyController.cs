@@ -4,6 +4,7 @@ using Tgs.GameWagers.Stat.Hourly.ViewModels;
 using Tgs.ServiceUtility;
 
 namespace Tgs.GameWagers.Stat.Hourly.Controllers;
+
 [Route("[controller]")]
 [ApiController]
 public class HourlyController : ControllerBase

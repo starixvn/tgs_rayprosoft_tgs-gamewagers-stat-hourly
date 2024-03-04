@@ -8,7 +8,7 @@ internal class StatisticalTimeUtnsil() : IStatisticalTimeUtnsil
 		var sourceTimeSpan = source.ToOffset(timeSpan);
 		var mins = sourceTimeSpan.Minute % 5;
 		var temp = sourceTimeSpan.AddMinutes(-mins);
-		return new DateTimeOffset(temp.Year, temp.Month, temp.Day, temp.Hour, temp.Minute, 00, TimeSpan.Zero);
+		return new DateTimeOffset(temp.Year, temp.Month, temp.Day, temp.Hour, temp.Minute, 00, timeSpan);
 	}
 
 	public (DateTimeOffset StartOn, DateTimeOffset EndOn) GetTimeZoneHour(DateTimeOffset startOn, DateTimeOffset endOn, int timeSpanMinutes = 480)
