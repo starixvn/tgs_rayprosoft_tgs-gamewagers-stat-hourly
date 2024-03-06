@@ -2,6 +2,7 @@
 using NSubstitute;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest;
+
 public class DateTimeOffsetUtensilUnitTest
 {
 	[Fact]
@@ -54,7 +55,7 @@ public class DateTimeOffsetUtensilUnitTest
 		var fakeTimeProvider = Substitute.For<TimeProvider>();
 
 		var startOn = new DateTimeOffset(2024, 02, 01, 00, 00, 00, TimeSpan.FromHours(+8));
-		var endOn = new DateTimeOffset(2024, 03, 03, 00, 00, 00, TimeSpan.FromHours(+8));
+		var endOn = new DateTimeOffset(2024, 03, 03, 00, 00, 01, TimeSpan.FromHours(+8));
 
 		var currentTime = new DateTimeOffset(2024, 03, 06, 05, 59, 19, TimeSpan.Zero);
 		_ = fakeTimeProvider.GetUtcNow()

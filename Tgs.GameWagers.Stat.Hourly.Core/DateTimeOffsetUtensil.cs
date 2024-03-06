@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core;
+
 internal class DateTimeOffsetUtensil(
 	ILogger<DateTimeOffsetUtensil> logger,
 	TimeProvider timeProvider) : IDateTimeOffsetUtensil
@@ -16,7 +17,7 @@ internal class DateTimeOffsetUtensil(
 			return false;
 		}
 
-		var diffSubtract = startOn.Subtract(endOn);
+		var diffSubtract = endOn.Subtract(startOn);
 
 		if (diffSubtract.TotalDays > 31)
 		{

@@ -2,7 +2,6 @@
 
 public class StatisticalTimeUtnsilUnitTest
 {
-
 	[Fact]
 	public void Get_StatOn_24_03_04_15_56_33_08()
 	{

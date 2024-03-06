@@ -1,5 +1,4 @@
 ﻿using Tgs.GameWagers.Stat.Hourly.Common.Protos;
-using Tgs.GameWagers.Stat.Hourly.Core;
 using Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
 using Tgs.ServiceUtility;
 using Valhalla.MessageQueue;

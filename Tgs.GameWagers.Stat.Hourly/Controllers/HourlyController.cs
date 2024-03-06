@@ -12,7 +12,7 @@ namespace Tgs.GameWagers.Stat.Hourly.Controllers;
 public class HourlyController : ControllerBase
 {
 	/// <summary>
-	/// 
+	///
 	/// </summary>
 	/// <param name="messageSender">The message sender.</param>
 	/// <param name="brandCode">The brand code.</param>
@@ -43,7 +43,7 @@ public class HourlyController : ControllerBase
 			cancellationToken: HttpContext.RequestAborted);
 
 	/// <summary>
-	/// 
+	///
 	/// </summary>
 	/// <param name="messageSender">The message sender.</param>
 	/// <param name="source">The source.</param>
