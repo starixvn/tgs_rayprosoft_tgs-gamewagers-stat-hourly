@@ -8,11 +8,22 @@ namespace Tgs.GameWagers.Stat.Hourly.Controllers;
 [ApiController]
 public class BrandController : ControllerBase
 {
+	/// <summary>
+	/// Queries the asynchronous.
+	/// </summary>
+	/// <param name="repository">The repository.</param>
+	/// <returns></returns>
 	[HttpGet()]
 	public IAsyncEnumerable<BrandInfo> QueryAsync(
 		[FromServices] IBrandRepository repository)
 		=> repository.QueryAsync(HttpContext.RequestAborted);
 
+	/// <summary>
+	/// Gets the asynchronous.
+	/// </summary>
+	/// <param name="repository">The repository.</param>
+	/// <param name="code">The code.</param>
+	/// <returns></returns>
 	[HttpGet("{code}")]
 	public ValueTask<BrandInfo?> GetAsync(
 		[FromServices] IBrandRepository repository,

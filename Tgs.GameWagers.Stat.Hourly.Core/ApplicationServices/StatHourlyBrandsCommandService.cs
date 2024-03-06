@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using System;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Tgs.GameWagers.Stat.Hourly.Common;
 using Tgs.GameWagers.Stat.Hourly.Common.Protos;
@@ -8,13 +9,23 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
 
-internal class BrandHourlyAllCommandService(
-	ILogger<BrandHourlyAllCommandService> logger,
+internal class StatHourlyBrandsCommandService(
+	ILogger<StatHourlyBrandsCommandService> logger,
+	IDateTimeOffsetUtensil dateTimeOffsetUtensil,
 	IBrandRepository repository,
-	IMessageSender messageSender) : ICommandService<BrandHourlyAllCommand>
+	IMessageSender messageSender) : ICommandService<StatHourlyBrandsCommand>
 {
-	public async ValueTask ExecuteAsync(BrandHourlyAllCommand command, CancellationToken cancellationToken = default)
+	public async ValueTask ExecuteAsync(StatHourlyBrandsCommand command, CancellationToken cancellationToken = default)
 	{
+		if (!dateTimeOffsetUtensil.Verify(command.StartOn, command.EndOn))
+		{
+			logger.LogWarning("LogOn:{logOn}  Message:This start time({startOn}) and end time({endOn}) verification failed..",
+				DateTime.Now.ToString("o"),
+				command.StartOn,
+				command.EndOn);
+			return;
+		}
+
 		var brands = await repository.QueryAsync(
 			cancellationToken: cancellationToken)
 			.ToArrayAsync(

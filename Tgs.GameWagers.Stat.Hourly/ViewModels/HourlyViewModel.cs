@@ -11,6 +11,6 @@ public class HourlyViewModel
 
 	[Required]
 	[DataType(DataType.DateTime)]
-	[DateTimeRangeDay("StartOn", 45)]
+	[DateTimeRangeDay("StartOn", 31)]
 	public DateTimeOffset EndOn { get; init; }
 }

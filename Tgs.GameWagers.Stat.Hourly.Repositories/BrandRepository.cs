@@ -52,7 +52,6 @@ internal class BrandRepository(
 			conform.BrandCode,
 			conform.TimeSpanMinutes
 			))
-		.AsAsyncEnumerable()
 		.FirstOrDefaultAsync(
 		cancellationToken: cancellationToken)
 		.ConfigureAwait(false);

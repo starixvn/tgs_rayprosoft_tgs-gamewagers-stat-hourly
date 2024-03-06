@@ -18,5 +18,6 @@ public static class ServiceCollectionExtensions
 		.AddScoped<IHangfireUtensil, HangfireUtensil>()
 		.AddSingleton<IStatisticalHourlyCloseDispatcher, StatisticalHourlyCloseDispatcher>()
 		.AddSingleton<IStatisticalHourlyZoneCloseDispatcher, StatisticalHourlyZoneCloseDispatcher>()
-		.AddSingleton<IStatisticalTimeUtnsil, StatisticalTimeUtnsil>();
+		.AddSingleton<IStatisticalTimeUtnsil, StatisticalTimeUtnsil>()
+		.AddSingleton<IDateTimeOffsetUtensil, DateTimeOffsetUtensil>();
 }

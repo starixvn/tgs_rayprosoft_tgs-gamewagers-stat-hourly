@@ -9,18 +9,28 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
 
-internal class BrandHourlyCommandService(
-	ILogger<BrandHourlyCommandService> logger,
+internal class StatHourlyBrandCommandService(
+	ILogger<StatHourlyBrandCommandService> logger,
+	IDateTimeOffsetUtensil dateTimeOffsetUtensil,
 	IBrandRepository repository,
-	IMessageSender messageSender) : ICommandService<BrandHourlyCommand>
+	IMessageSender messageSender) : ICommandService<StatHourlyBrandCommand>
 {
-	public async ValueTask ExecuteAsync(BrandHourlyCommand command, CancellationToken cancellationToken = default)
+	public async ValueTask ExecuteAsync(StatHourlyBrandCommand command, CancellationToken cancellationToken = default)
 	{
+		if (!dateTimeOffsetUtensil.Verify(command.StartOn, command.EndOn))
+		{
+			logger.LogWarning("LogOn:{logOn}  Message:This start time({startOn}) and end time({endOn}) verification failed.",
+				DateTime.Now.ToString("o"),
+				command.StartOn,
+				command.EndOn);
+			return;
+		}
+
 		var brand = await repository.GetAsync(
 			code: command.BrandCode,
 			cancellationToken: cancellationToken)
 			.ConfigureAwait(false)
-			?? throw new NullReferenceException($"This brand does not exist.{command.BrandCode}");
+			?? throw new ArgumentNullException(command.BrandCode);
 
 		var message = new GameWagersStatHourlyMessage
 		{

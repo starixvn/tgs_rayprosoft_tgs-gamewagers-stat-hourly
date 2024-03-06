@@ -89,9 +89,13 @@ builder.Services
 	.AddMessageQueue()
 	.AddNatsMessageQueue(config => config
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
-	.AddHandler<StatisticalHourlyCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatisticalHourlyCloseMessageHandler).FullName!.ToLower())
-	.AddHandler<StatisticalHourlyZoneCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatisticalHourlyZoneCloseMessageHandler).FullName!.ToLower()))
+	.AddHandler<StatHourlyBrandMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyBrand, typeof(StatHourlyBrandMessageHandler).FullName!.ToLower())
+	.AddHandler<StatHourlyBrandsMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyBrands, typeof(StatHourlyBrandsMessageHandler).FullName!.ToLower())
+	.AddHandler<StatHourlyCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatHourlyCloseMessageHandler).FullName!.ToLower())
+	.AddHandler<StatHourlyZoneCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatHourlyZoneCloseMessageHandler).FullName!.ToLower()))
 	.ClearAllExchanges()
+	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyBrand)
+	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyBrands)
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyClose)
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyCloseFinish)
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyCloseZoneFinish);

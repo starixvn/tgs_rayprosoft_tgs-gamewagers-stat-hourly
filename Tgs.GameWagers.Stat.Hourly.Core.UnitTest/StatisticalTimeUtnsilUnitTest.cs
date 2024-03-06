@@ -1,9 +1,8 @@
-﻿using NSubstitute;
-
-namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest;
+﻿namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest;
 
 public class StatisticalTimeUtnsilUnitTest
 {
+
 	[Fact]
 	public void Get_StatOn_24_03_04_15_56_33_08()
 	{

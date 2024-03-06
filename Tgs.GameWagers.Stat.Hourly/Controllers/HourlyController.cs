@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
+﻿using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Mvc;
+using Tgs.GameWagers.Stat.Hourly.Common;
+using Tgs.GameWagers.Stat.Hourly.Common.Protos;
 using Tgs.GameWagers.Stat.Hourly.ViewModels;
-using Tgs.ServiceUtility;
+using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Controllers;
 
@@ -10,9 +12,9 @@ namespace Tgs.GameWagers.Stat.Hourly.Controllers;
 public class HourlyController : ControllerBase
 {
 	/// <summary>
-	/// Brands the hour asynchronous.
+	/// 
 	/// </summary>
-	/// <param name="service">The service.</param>
+	/// <param name="messageSender">The message sender.</param>
 	/// <param name="brandCode">The brand code.</param>
 	/// <param name="source">The source.</param>
 	/// <returns></returns>
@@ -21,32 +23,29 @@ public class HourlyController : ControllerBase
 	///
 	///     Post /GPI/
 	///         {
-	///             "startOn": "2023-09-01T00:00:00.000+08:00",
-	///             "endOn": "2024-01-01T00:00:00.000+08:00"
+	///             "startOn": "2024-03-05T00:00:00.000+08:00",
+	///             "endOn": "2024-03-06T00:00:00.000+08:00"
 	///         }
 	/// </remarks>
-	[HttpPost("{brandCode}", Name = "BrandHour")]
-	public ValueTask BrandHourAsync(
-		[FromServices] ICommandService<BrandHourlyCommand> service,
+	[HttpPost("{brandCode}", Name = "StatHourly_Brand")]
+	public ValueTask StatHourlyBrandAsync(
+		[FromServices] IMessageSender messageSender,
 		string brandCode,
 		HourlyViewModel source)
-	{
-		var command = new BrandHourlyCommand
-		(
-			BrandCode: brandCode,
-			StartOn: source.StartOn,
-			EndOn: source.EndOn
-		);
-
-		return service.ExecuteAsync(
-			command: command,
+		=> messageSender.PublishAsync(
+			subject: GameWagersStatHourlyNatsConst.StatHourlyBrand,
+			data: new GameWagersStatHourlyBrandMessage
+			{
+				BrandCode = brandCode,
+				StartOn = source.StartOn.ToTimestamp(),
+				EndOn = source.EndOn.ToTimestamp()
+			},
 			cancellationToken: HttpContext.RequestAborted);
-	}
 
 	/// <summary>
-	/// Brands the hour all asynchronous.
+	/// 
 	/// </summary>
-	/// <param name="service">The service.</param>
+	/// <param name="messageSender">The message sender.</param>
 	/// <param name="source">The source.</param>
 	/// <returns></returns>
 	/// <remarks>
@@ -54,23 +53,20 @@ public class HourlyController : ControllerBase
 	///
 	///     Post
 	///         {
-	///             "startOn": "2023-09-01T00:00:00.000+08:00",
-	///             "endOn": "2024-01-01T00:00:00.000+08:00"
+	///             "startOn": "2024-03-05T00:00:00.000+08:00",
+	///             "endOn": "2024-03-06T00:00:00.000+08:00"
 	///         }
 	/// </remarks>
-	[HttpPost("all", Name = "BrandHourAll")]
-	public ValueTask BrandHourAllAsync(
-		[FromServices] ICommandService<BrandHourlyAllCommand> service,
+	[HttpPost("all", Name = "StatHourly_Brands")]
+	public ValueTask StatHourlyBrandsAsync(
+		[FromServices] IMessageSender messageSender,
 		HourlyViewModel source)
-	{
-		var command = new BrandHourlyAllCommand
-		(
-			StartOn: source.StartOn,
-			EndOn: source.EndOn
-		);
-
-		return service.ExecuteAsync(
-			command: command,
+		=> messageSender.PublishAsync(
+			subject: GameWagersStatHourlyNatsConst.StatHourlyBrands,
+			data: new GameWagersStatHourlyBrandsMessage
+			{
+				StartOn = source.StartOn.ToTimestamp(),
+				EndOn = source.EndOn.ToTimestamp()
+			},
 			cancellationToken: HttpContext.RequestAborted);
-	}
 }

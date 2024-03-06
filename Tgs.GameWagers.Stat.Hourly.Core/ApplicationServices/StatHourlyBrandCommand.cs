@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
 
-public record BrandHourlyCommand(
+public record StatHourlyBrandCommand(
 	string BrandCode,
 	DateTimeOffset StartOn,
 	DateTimeOffset EndOn);

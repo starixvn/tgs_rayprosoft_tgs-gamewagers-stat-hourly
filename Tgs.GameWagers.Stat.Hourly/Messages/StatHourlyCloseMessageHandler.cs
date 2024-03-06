@@ -5,8 +5,8 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Messages;
 
-public class StatisticalHourlyCloseMessageHandler(
-	ILogger<StatisticalHourlyCloseMessageHandler> logger,
+public class StatHourlyCloseMessageHandler(
+	ILogger<StatHourlyCloseMessageHandler> logger,
 	IStatisticalHourlyCloseDispatcher dispatcher) : IMessageHandler<GameWagersStatHourlyMessage>
 {
 	public ValueTask HandleAsync(string subject, GameWagersStatHourlyMessage data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)

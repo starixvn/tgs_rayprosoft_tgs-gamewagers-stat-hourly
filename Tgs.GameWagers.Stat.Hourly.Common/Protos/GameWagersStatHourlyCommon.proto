@@ -48,3 +48,19 @@ message GameWagersStatHourlyFinishMessage {
     // 結束時間
     google.protobuf.Timestamp end_on = 9;
 }
+
+message GameWagersStatHourlyBrandMessage {
+    // 平台代碼
+    string brand_code = 1;
+    // 起始時間
+    google.protobuf.Timestamp start_on = 2;
+    // 結束時間
+    google.protobuf.Timestamp end_on = 3;
+}
+
+message GameWagersStatHourlyBrandsMessage {
+    // 起始時間
+    google.protobuf.Timestamp start_on = 1;
+    // 結束時間
+    google.protobuf.Timestamp end_on = 2;
+}
