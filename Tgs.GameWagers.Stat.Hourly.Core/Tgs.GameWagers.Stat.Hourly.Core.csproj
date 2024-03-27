@@ -12,7 +12,7 @@
     <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.3" />
     <PackageReference Include="PhoenixToolkits.MessageQueue" Version="2.1.0" />
     <PackageReference Include="PhoenixToolkits.MessageQueue.Nats" Version="2.1.2" />
-    <PackageReference Include="StackExchange.Redis" Version="2.7.27" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="Tgs.MessageQueue.Nats.Serializers" Version="0.0.2" />
     <PackageReference Include="TGS.ServiceUtility" Version="0.2.0" />
