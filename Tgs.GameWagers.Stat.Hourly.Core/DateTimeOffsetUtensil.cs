@@ -32,7 +32,7 @@ internal class DateTimeOffsetUtensil(
 
 		diffSubtract = currentTime.Subtract(startOn);
 
-		if (diffSubtract.TotalDays > 60)
+		if (diffSubtract.TotalDays > 180)
 		{
 			logger.LogWarning("LogOn:{logOn}  Message:This start time({startOn}) is more than 60 days from the current time({currentTime}).",
 				DateTime.Now.ToString("o"),
