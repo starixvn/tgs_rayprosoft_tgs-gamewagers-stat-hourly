@@ -51,8 +51,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app: {{ include "game-gamewagers-stat-hourly.name" . }}
 tgs.kind: game
 tgs.game.kind: gamewagers
-tgs.gamewagers.kind: stats
-tgs.node.selector.kind: gamewagers
+tgs.gamewagers.kind: stat
+tgs.gamewagers.stat.kind: hourly
 {{- end }}
 
 {{/*
