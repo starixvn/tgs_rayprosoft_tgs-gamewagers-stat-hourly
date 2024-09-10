@@ -69,6 +69,7 @@ public class DateTimeOffsetUtensilUnitTest
 		Assert.False(actual);
 	}
 
+	/*
 	[Fact]
 	public void This_start_time_is_more_than_180_days_from_the_current_time()
 	{
@@ -77,6 +78,29 @@ public class DateTimeOffsetUtensilUnitTest
 
 		var startOn = new DateTimeOffset(2023, 08, 01, 00, 00, 00, TimeSpan.FromHours(+8));
 		var endOn = new DateTimeOffset(2023, 09, 01, 00, 00, 00, TimeSpan.FromHours(+8));
+
+		var currentTime = new DateTimeOffset(2024, 03, 06, 05, 59, 19, TimeSpan.Zero);
+		_ = fakeTimeProvider.GetUtcNow()
+			.Returns(currentTime);
+
+		var sut = new DateTimeOffsetUtensil(
+			faceLogger,
+			fakeTimeProvider);
+
+		var actual = sut.Verify(startOn, endOn);
+		Assert.False(actual);
+	}
+	*/
+
+	
+	[Fact]
+	public void This_start_time_is_more_than_204_02_01()
+	{
+		var faceLogger = NullLogger<DateTimeOffsetUtensil>.Instance;
+		var fakeTimeProvider = Substitute.For<TimeProvider>();
+
+		var startOn = new DateTimeOffset(2024, 01,31 , 00, 00, 00, TimeSpan.FromHours(+8));
+		var endOn = new DateTimeOffset(2024, 02, 01, 00, 00, 00, TimeSpan.FromHours(+8));
 
 		var currentTime = new DateTimeOffset(2024, 03, 06, 05, 59, 19, TimeSpan.Zero);
 		_ = fakeTimeProvider.GetUtcNow()

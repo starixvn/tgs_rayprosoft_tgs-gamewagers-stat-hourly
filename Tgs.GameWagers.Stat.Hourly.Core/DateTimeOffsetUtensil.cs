@@ -17,6 +17,15 @@ internal class DateTimeOffsetUtensil(
 			return false;
 		}
 
+		if (startOn < new DateTimeOffset(2024, 02, 01, 00, 00, 00, TimeSpan.FromHours(+08)))
+		{
+			logger.LogWarning("LogOn:{logOn}  Message:This start time({startOn}) is more than {minOn}.",
+				DateTime.Now.ToString("o"),
+				startOn,
+				new DateTimeOffset(2024, 02, 01, 00, 00, 00, TimeSpan.FromHours(+08)));
+			return false;
+		}
+
 		var diffSubtract = endOn.Subtract(startOn);
 
 		if (diffSubtract.TotalDays > 31)
@@ -32,6 +41,7 @@ internal class DateTimeOffsetUtensil(
 
 		diffSubtract = currentTime.Subtract(startOn);
 
+		/*
 		if (diffSubtract.TotalDays > 180)
 		{
 			logger.LogWarning("LogOn:{logOn}  Message:This start time({startOn}) is more than 60 days from the current time({currentTime}).",
@@ -40,6 +50,7 @@ internal class DateTimeOffsetUtensil(
 				currentTime);
 			return false;
 		}
+		*/
 
 		return true;
 	}
