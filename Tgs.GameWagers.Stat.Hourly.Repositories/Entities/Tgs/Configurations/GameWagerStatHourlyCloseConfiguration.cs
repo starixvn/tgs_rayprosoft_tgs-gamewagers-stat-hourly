@@ -60,73 +60,73 @@ namespace Tgs.GameWagers.Stat.Hourly.Entities.Configurations
             entity.HasIndex(e => e.StatOn, "ix_game_wager_stat_h_c_stat_on");
 
             entity.Property(e => e.StatOn)
-            .HasComment("統計時間")
-            .HasColumnName("stat_on");
+                .HasComment("統計時間")
+                .HasColumnName("stat_on");
             entity.Property(e => e.ResellerId)
-            .HasComment("公司識別碼")
-            .HasColumnName("reseller_id");
+                .HasComment("公司識別碼")
+                .HasColumnName("reseller_id");
             entity.Property(e => e.LicenseeId)
-            .HasComment("分公司識別碼")
-            .HasColumnName("licensee_id");
+                .HasComment("分公司識別碼")
+                .HasColumnName("licensee_id");
             entity.Property(e => e.BrandId)
-            .HasComment("平台識別碼")
-            .HasColumnName("brand_id");
+                .HasComment("平台識別碼")
+                .HasColumnName("brand_id");
             entity.Property(e => e.PlayerCode)
-            .HasMaxLength(16)
-            .HasComment("玩家代碼")
-            .HasColumnName("player_code");
+                .HasMaxLength(16)
+                .HasComment("玩家代碼")
+                .HasColumnName("player_code");
             entity.Property(e => e.GameProviderId)
-            .HasComment("遊戲供應商識別碼")
-            .HasColumnName("game_provider_id");
+                .HasComment("遊戲供應商識別碼")
+                .HasColumnName("game_provider_id");
             entity.Property(e => e.GameId)
-            .HasComment("遊戲識別碼")
-            .HasColumnName("game_id");
+                .HasComment("遊戲識別碼")
+                .HasColumnName("game_id");
             entity.Property(e => e.Bet)
-            .HasPrecision(18, 6)
-            .HasComment("下注")
-            .HasColumnName("bet");
+                .HasPrecision(18, 6)
+                .HasComment("下注")
+                .HasColumnName("bet");
             entity.Property(e => e.Commission)
-            .HasPrecision(18, 6)
-            .HasComment("傭金")
-            .HasColumnName("commission");
+                .HasPrecision(18, 6)
+                .HasComment("傭金")
+                .HasColumnName("commission");
             entity.Property(e => e.Count)
-            .HasDefaultValue(0)
-            .HasComment("筆數")
-            .HasColumnName("count");
+                .HasDefaultValue(0)
+                .HasComment("筆數")
+                .HasColumnName("count");
             entity.Property(e => e.CreatedOn)
-            .HasDefaultValueSql("CURRENT_TIMESTAMP")
-            .HasComment("創建時間")
-            .HasColumnName("created_on");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasComment("創建時間")
+                .HasColumnName("created_on");
             entity.Property(e => e.Settle)
-            .HasPrecision(18, 6)
-            .HasComment("結算(包含本金)")
-            .HasColumnName("settle");
+                .HasPrecision(18, 6)
+                .HasComment("結算(包含本金)")
+                .HasColumnName("settle");
             entity.Property(e => e.StatDayOn)
-            .HasDefaultValueSql("'1990-01-01'::date")
-            .HasComment("統計日時間")
-            .HasColumnName("stat_day_on");
+                .HasDefaultValueSql("'1990-01-01'::date")
+                .HasComment("統計日時間")
+                .HasColumnName("stat_day_on");
             entity.Property(e => e.StatHourOn)
-            .HasComment("統計小時時間")
-            .HasColumnName("stat_hour_on");
+                .HasComment("統計小時時間")
+                .HasColumnName("stat_hour_on");
             entity.Property(e => e.StatTimeSpan)
-            .HasComment("統計時間跨度")
-            .HasColumnName("stat_time_span");
+                .HasComment("統計時間跨度")
+                .HasColumnName("stat_time_span");
             entity.Property(e => e.Turnover)
-            .HasPrecision(18, 6)
-            .HasComment("有效投注")
-            .HasColumnName("turnover");
+                .HasPrecision(18, 6)
+                .HasComment("有效投注")
+                .HasColumnName("turnover");
             entity.Property(e => e.UpdatedOn)
-            .HasDefaultValueSql("CURRENT_TIMESTAMP")
-            .HasComment("修改時間")
-            .HasColumnName("updated_on");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasComment("修改時間")
+                .HasColumnName("updated_on");
             entity.Property(e => e.ValidBet)
-            .HasPrecision(18, 6)
-            .HasComment("實際/有效下注")
-            .HasColumnName("valid_bet");
+                .HasPrecision(18, 6)
+                .HasComment("實際/有效下注")
+                .HasColumnName("valid_bet");
             entity.Property(e => e.WinLoss)
-            .HasPrecision(18, 6)
-            .HasComment("玩家損益/淨利")
-            .HasColumnName("win_loss");
+                .HasPrecision(18, 6)
+                .HasComment("玩家損益/淨利")
+                .HasColumnName("win_loss");
 
             OnConfigurePartial(entity);
         }

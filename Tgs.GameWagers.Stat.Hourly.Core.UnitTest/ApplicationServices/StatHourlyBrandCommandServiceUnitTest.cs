@@ -13,6 +13,7 @@ using Valhalla.MessageQueue;
 using Tgs.GameWagers.Stat.Hourly.Core.Models;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest.ApplicationServices;
+
 public class StatHourlyBrandCommandServiceUnitTest
 {
 	[Fact]
