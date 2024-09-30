@@ -52,7 +52,7 @@ internal class StatisticalHourlyCloseChannel(
 				return;
 
 			_backgroundTask = Task.Run(
-				() => ProcessCommandLoopAsync(_cancellationTokenSource.Token),
+				() => ProcessRequestLoopAsync(_cancellationTokenSource.Token),
 				_cancellationTokenSource.Token);
 		}
 		finally
@@ -61,7 +61,7 @@ internal class StatisticalHourlyCloseChannel(
 		}
 	}
 
-	public async ValueTask PushCommandAsync(StatHourlyCloseRequest request, CancellationToken cancellationToken = default)
+	public async ValueTask PushRequestAsync(StatHourlyCloseRequest request, CancellationToken cancellationToken = default)
 	{
 		using var cts = CancellationTokenSource.CreateLinkedTokenSource(
 			token1: cancellationToken,
@@ -106,7 +106,7 @@ internal class StatisticalHourlyCloseChannel(
 		}
 	}
 
-	private async Task ProcessCommandLoopAsync(CancellationToken cancellationToken = default)
+	private async Task ProcessRequestLoopAsync(CancellationToken cancellationToken = default)
 	{
 		await Task.Yield();
 
