@@ -5,5 +5,4 @@ public record BrandInfo(
 	Guid LicenseeId,
 	string LicenseeCode,
 	Guid BrandId,
-	string BrandCode,
-	int TimeSpanMinutes);
+	string BrandCode);

@@ -20,12 +20,10 @@ message GameWagersStatHourlyMessage {
     phoenix.protobuf.GuidValue brand_id = 5;
     // 平台代碼
     string brand_code = 6;
-    // 時間跨度分鐘
-    int32 time_span_minutes = 7;
     // 起始時間
-    google.protobuf.Timestamp start_on = 8;
+    google.protobuf.Timestamp start_on = 7;
     // 結束時間
-    google.protobuf.Timestamp end_on = 9;
+    google.protobuf.Timestamp end_on = 8;
 }
 
 message GameWagersStatHourlyFinishMessage {

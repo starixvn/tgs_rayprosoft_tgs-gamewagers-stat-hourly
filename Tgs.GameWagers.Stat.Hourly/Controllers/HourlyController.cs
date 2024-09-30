@@ -23,8 +23,8 @@ public class HourlyController : ControllerBase
 	///
 	///     Post /GPI/
 	///         {
-	///             "startOn": "2024-03-05T00:00:00.000+08:00",
-	///             "endOn": "2024-03-06T00:00:00.000+08:00"
+	///             "startOn": "2024-09-30T00:00:00.000+08:00",
+	///             "endOn": "2024-10-01T00:00:00.000+08:00"
 	///         }
 	/// </remarks>
 	[HttpPost("{brandCode}", Name = "StatHourly_Brand")]
@@ -53,8 +53,8 @@ public class HourlyController : ControllerBase
 	///
 	///     Post
 	///         {
-	///             "startOn": "2024-03-05T00:00:00.000+08:00",
-	///             "endOn": "2024-03-06T00:00:00.000+08:00"
+	///             "startOn": "2024-09-30T00:00:00.000+08:00",
+	///             "endOn": "2024-10-01T00:00:00.000+08:00"
 	///         }
 	/// </remarks>
 	[HttpPost("all", Name = "StatHourly_Brands")]

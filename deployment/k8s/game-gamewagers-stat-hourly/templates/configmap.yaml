@@ -9,7 +9,7 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.GameWagers.Stat.Hourly.Messages": "Warning",
+          "Tgs.GameWagers.Stat.Hourly.Messages.StatHourlyCloseMessageHandler": "Information",
           "Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices": "Information"
         }
       }

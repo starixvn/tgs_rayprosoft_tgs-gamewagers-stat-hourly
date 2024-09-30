@@ -1,33 +1,31 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Threading.Channels;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using Tgs.GameWagers.Stat.Hourly.Core.ApplicationServices;
-using Tgs.ServiceUtility;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core;
 
 internal class StatisticalHourlyCloseChannel(
 	ILogger<StatisticalHourlyCloseChannel> logger,
-	ICommandService<StatHourlyCloseCommand> service,
-	string key) : IDisposable
+	IMediator mediator,
+	string key) : IDisposable, IAsyncDisposable
 {
 	private static readonly ActivitySource _ActivitySource = new(name: typeof(StatisticalHourlyCloseChannel).FullName!);
 
-	private readonly CancellationTokenSource _cancellationTokenSource = new();
-
-	private readonly Channel<StatHourlyCloseCommand> _channel = Channel.CreateUnbounded<StatHourlyCloseCommand>(
+	private readonly Channel<StatHourlyCloseRequest> _channel = Channel.CreateUnbounded<StatHourlyCloseRequest>(
 		new UnboundedChannelOptions
 		{
 			SingleReader = true
 		});
 
 	private readonly SemaphoreSlim _locker = new(1, 1);
+	private readonly CancellationTokenSource _cancellationTokenSource = new();
+
 	private Task? _backgroundTask;
+	private Timer? _timer;
 	private bool _disposedValue;
-	/*
-    private int _expiry = 330;
-    private Timer? _timer;
-    */
 
 	public event EventHandler? Disposed;
 
@@ -35,17 +33,11 @@ internal class StatisticalHourlyCloseChannel(
 
 	~StatisticalHourlyCloseChannel()
 	{
-		Dispose(false);
-	}
-
-	public void Dispose()
-	{
 		// 請勿變更此程式碼。請將清除程式碼放入 'Dispose(bool disposing)' 方法
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
+		Dispose(disposing: false);
 	}
 
-	public async ValueTask InitAsync(CancellationToken cancellationToken = default)
+	public async ValueTask PrepareAsync(CancellationToken cancellationToken = default)
 	{
 		using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
 
@@ -57,20 +49,7 @@ internal class StatisticalHourlyCloseChannel(
 		try
 		{
 			if (_backgroundTask is not null)
-			{
 				return;
-			}
-			/*
-            _timer = new Timer(_ =>
-            {
-                _ = Interlocked.Decrement(ref _expiry);
-
-                if (_expiry <= 0)
-                {
-                    Dispose();
-                }
-            }, null, 0, 1000);
-            */
 
 			_backgroundTask = Task.Run(
 				() => ProcessCommandLoopAsync(_cancellationTokenSource.Token),
@@ -82,16 +61,30 @@ internal class StatisticalHourlyCloseChannel(
 		}
 	}
 
-	public async ValueTask PushCommandAsync(StatHourlyCloseCommand command, CancellationToken cancellationToken = default)
+	public async ValueTask PushCommandAsync(StatHourlyCloseRequest request, CancellationToken cancellationToken = default)
 	{
 		using var cts = CancellationTokenSource.CreateLinkedTokenSource(
-			cancellationToken,
-			_cancellationTokenSource.Token);
+			token1: cancellationToken,
+			token2: _cancellationTokenSource.Token);
 
 		await _channel.Writer.WriteAsync(
-			command,
-			cts.Token)
-			.ConfigureAwait(false);
+			item: request,
+			cancellationToken: cts.Token).ConfigureAwait(false);
+	}
+
+	public ValueTask DisposeAsync()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+
+		return ValueTask.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		// 請勿變更此程式碼。請將清除程式碼放入 'Dispose(bool disposing)' 方法
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
 	}
 
 	protected virtual void Dispose(bool disposing)
@@ -100,10 +93,8 @@ internal class StatisticalHourlyCloseChannel(
 		{
 			if (disposing)
 			{
-				/*
-                _timer?.Dispose();
-                _timer = null;
-                */
+				_timer?.Dispose();
+				_timer = null;
 
 				Disposed?.Invoke(this, EventArgs.Empty);
 				_channel.Writer.Complete();
@@ -120,11 +111,11 @@ internal class StatisticalHourlyCloseChannel(
 		await Task.Yield();
 
 		var reader = _channel.Reader;
-		while (await reader.WaitToReadAsync(
-			cancellationToken: cancellationToken)
+		while (await reader
+			.WaitToReadAsync(cancellationToken)
 			.ConfigureAwait(false))
 		{
-			if (reader.TryRead(out var command))
+			if (reader.TryRead(out var request))
 			{
 				using var activity = _ActivitySource.StartActivity(
 					"StatisticalHourlyCloseChannel handle exchange",
@@ -132,16 +123,43 @@ internal class StatisticalHourlyCloseChannel(
 					parentContext: default);
 				try
 				{
-					logger.LogInformation("LogOn:{logOn} Key:{key} Command:{command}", DateTime.Now.ToString("o"), Key, command);
-
-					await service.ExecuteAsync(
-						command: command,
+					logger.LogInformation("{logInformation}",
+						JsonSerializer.Serialize(new
+						{
+							LogOn = DateTime.Now.ToString("u"),
+							Key,
+							Data = new
+							{
+								request.ResellerCode,
+								request.LicenseeCode,
+								request.BrandCode,
+								StartOn = request.StartOn.ToString("u"),
+								EndOn = request.EndOn.ToString("u")
+							},
+							Message = "This processing."
+						}));
+					await mediator.Send(
+						request: request,
 						cancellationToken: cancellationToken)
 						.ConfigureAwait(false);
 				}
 				catch (Exception ex)
 				{
-					logger.LogError(ex, "LogOn:{logOn} Mesage:Process command occur errors.({command})", DateTime.Now.ToString("o"), command);
+					logger.LogError(ex, "{logError}",
+						JsonSerializer.Serialize(new
+						{
+							LogOn = DateTime.Now.ToString("u"),
+							Key,
+							Data = new
+							{
+								request.ResellerCode,
+								request.LicenseeCode,
+								request.BrandCode,
+								StartOn = request.StartOn.ToString("u"),
+								EndOn = request.EndOn.ToString("u")
+							},
+							Message = "This exception occurs."
+						}));
 				}
 			}
 		}
