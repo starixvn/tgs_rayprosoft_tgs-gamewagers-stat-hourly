@@ -8,56 +8,58 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.UnitTest.ApplicationServices;
 
-public class StatHourlyCloseCommandServiceUnitTest
+public class StatHourlyCloseHandlerUnitTest
 {
 	[Fact]
 	public async Task Normal_Process()
 	{
-		var faceLogger = NullLogger<StatHourlyCloseCommandService>.Instance;
+		var faceLogger = NullLogger<StatHourlyCloseHandler>.Instance;
 		var fakeStatisticalTimeUtnsil = Substitute.For<IStatisticalTimeUtnsil>();
 		var fakeGameWagerStatCloseRepository = Substitute.For<IGameWagerStatCloseRepository>();
 		var fakeGameWagerStatHourlyCloseRepository = Substitute.For<IGameWagerStatHourlyCloseRepository>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
-		var command = new StatHourlyCloseCommand(
+		var request = new StatHourlyCloseRequest(
 			ResellerId: Guid.NewGuid(),
-			ResellerCode: "TGS",
+			ResellerCode: "DEMO",
 			LicenseeId: Guid.NewGuid(),
 			LicenseeCode: "TGS",
 			BrandId: Guid.NewGuid(),
 			BrandCode: "GPI",
-			TimeSpanMinutes: 480,
 			StartOn: DateTimeOffset.Parse("2024-01-09T16:00:00.000+08:00"),
 			EndOn: DateTimeOffset.Parse("2024-01-09T17:00:00.000+08:00"));
 
 		var startOn = new DateTimeOffset(2024, 01, 09, 16, 00, 00, new TimeSpan(08, 00, 00));
 		var endOn = new DateTimeOffset(2024, 01, 09, 17, 00, 00, new TimeSpan(08, 00, 00));
 		_ = fakeStatisticalTimeUtnsil.GetTimeZoneHour(
-			startOn: Arg.Is(command.StartOn),
-			endOn: Arg.Is(command.EndOn),
+			startOn: Arg.Is(request.StartOn),
+			endOn: Arg.Is(request.EndOn),
 			timeSpanMinutes: Arg.Is(480))
 			.Returns((startOn, endOn));
 
 		_ = fakeGameWagerStatCloseRepository.ExistAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(true);
 
-		var service = new StatHourlyCloseCommandService(
+		var sut = new StatHourlyCloseHandler(
 			faceLogger,
 			fakeStatisticalTimeUtnsil,
 			fakeGameWagerStatCloseRepository,
 			fakeGameWagerStatHourlyCloseRepository,
 			fakeMessageSender);
 
-		await service.ExecuteAsync(command: command);
+		var cancellationTokenSource = new CancellationTokenSource();
+		var token = cancellationTokenSource.Token;
+
+		await sut.Handle(request, token);
 
 		_ = fakeGameWagerStatHourlyCloseRepository
 			.Received(1)
 			.DeleteBatchAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>());
@@ -65,7 +67,7 @@ public class StatHourlyCloseCommandServiceUnitTest
 		_ = fakeGameWagerStatHourlyCloseRepository
 			.Received(1)
 			.InsertBatchAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>());
@@ -76,13 +78,13 @@ public class StatHourlyCloseCommandServiceUnitTest
 			Arg.Is(GameWagersStatHourlyNatsConst.StatHourlyCloseFinish),
 			data: Arg.Is(new GameWagersStatHourlyFinishMessage
 			{
-				ResellerId = command.ResellerId,
-				ResellerCode = command.ResellerCode,
-				LicenseeId = command.LicenseeId,
-				LicenseeCode = command.LicenseeCode,
-				BrandId = command.BrandId,
-				BrandCode = command.BrandCode,
-				TimeSpanMinutes = command.TimeSpanMinutes,
+				ResellerId = request.ResellerId,
+				ResellerCode = request.ResellerCode,
+				LicenseeId = request.LicenseeId,
+				LicenseeCode = request.LicenseeCode,
+				BrandId = request.BrandId,
+				BrandCode = request.BrandCode,
+				TimeSpanMinutes = 480,
 				StartOn = startOn.ToTimestamp(),
 				EndOn = endOn.ToTimestamp()
 			}),
@@ -93,51 +95,53 @@ public class StatHourlyCloseCommandServiceUnitTest
 	public async Task No_Data()
 
 	{
-		var faceLogger = NullLogger<StatHourlyCloseCommandService>.Instance;
+		var faceLogger = NullLogger<StatHourlyCloseHandler>.Instance;
 		var fakeStatisticalTimeUtnsil = Substitute.For<IStatisticalTimeUtnsil>();
 		var fakeGameWagerStatCloseRepository = Substitute.For<IGameWagerStatCloseRepository>();
 		var fakeGameWagerStatHourlyCloseRepository = Substitute.For<IGameWagerStatHourlyCloseRepository>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
-		var command = new StatHourlyCloseCommand(
+		var request = new StatHourlyCloseRequest(
 			ResellerId: Guid.NewGuid(),
-			ResellerCode: "TGS",
+			ResellerCode: "DEMO",
 			LicenseeId: Guid.NewGuid(),
 			LicenseeCode: "TGS",
 			BrandId: Guid.NewGuid(),
 			BrandCode: "GPI",
-			TimeSpanMinutes: 480,
 			StartOn: DateTimeOffset.Parse("2024-01-09T16:00:00.000+08:00"),
 			EndOn: DateTimeOffset.Parse("2024-01-09T17:00:00.000+08:00"));
 
 		var startOn = new DateTimeOffset(2024, 01, 09, 16, 00, 00, new TimeSpan(08, 00, 00));
 		var endOn = new DateTimeOffset(2024, 01, 09, 17, 00, 00, new TimeSpan(08, 00, 00));
 		_ = fakeStatisticalTimeUtnsil.GetTimeZoneHour(
-			startOn: Arg.Is(command.StartOn),
-			endOn: Arg.Is(command.EndOn),
+			startOn: Arg.Is(request.StartOn),
+			endOn: Arg.Is(request.EndOn),
 			timeSpanMinutes: Arg.Is(480))
 			.Returns((startOn, endOn));
 
 		_ = fakeGameWagerStatCloseRepository.ExistAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(false);
 
-		var service = new StatHourlyCloseCommandService(
+		var sut = new StatHourlyCloseHandler(
 			faceLogger,
 			fakeStatisticalTimeUtnsil,
 			fakeGameWagerStatCloseRepository,
 			fakeGameWagerStatHourlyCloseRepository,
 			fakeMessageSender);
 
-		await service.ExecuteAsync(command: command);
+		var cancellationTokenSource = new CancellationTokenSource();
+		var token = cancellationTokenSource.Token;
+
+		await sut.Handle(request, token);
 
 		_ = fakeGameWagerStatHourlyCloseRepository
 			.Received(0)
 			.DeleteBatchAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>());
@@ -145,7 +149,7 @@ public class StatHourlyCloseCommandServiceUnitTest
 		_ = fakeGameWagerStatHourlyCloseRepository
 			.Received(0)
 			.InsertBatchAsync(
-			brandId: Arg.Is(command.BrandId),
+			brandId: Arg.Is(request.BrandId),
 			startOn: Arg.Is(startOn),
 			endOn: Arg.Is(endOn),
 			cancellationToken: Arg.Any<CancellationToken>());
@@ -156,13 +160,13 @@ public class StatHourlyCloseCommandServiceUnitTest
 			Arg.Is(GameWagersStatHourlyNatsConst.StatHourlyCloseFinish),
 			data: Arg.Is(new GameWagersStatHourlyFinishMessage
 			{
-				ResellerId = command.ResellerId,
-				ResellerCode = command.ResellerCode,
-				LicenseeId = command.LicenseeId,
-				LicenseeCode = command.LicenseeCode,
-				BrandId = command.BrandId,
-				BrandCode = command.BrandCode,
-				TimeSpanMinutes = command.TimeSpanMinutes,
+				ResellerId = request.ResellerId,
+				ResellerCode = request.ResellerCode,
+				LicenseeId = request.LicenseeId,
+				LicenseeCode = request.LicenseeCode,
+				BrandId = request.BrandId,
+				BrandCode = request.BrandCode,
+				TimeSpanMinutes = 480,
 				StartOn = startOn.ToTimestamp(),
 				EndOn = endOn.ToTimestamp()
 			}),

@@ -10,12 +10,12 @@
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
     <PackageReference Include="Hangfire.Dashboard.Management" Version="1.7.9" />
     <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.3" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="PhoenixToolkits.MessageQueue" Version="2.2.0" />
     <PackageReference Include="PhoenixToolkits.MessageQueue.Nats" Version="2.2.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="Tgs.MessageQueue.Nats.Serializers" Version="0.0.2" />
-    <PackageReference Include="TGS.ServiceUtility" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

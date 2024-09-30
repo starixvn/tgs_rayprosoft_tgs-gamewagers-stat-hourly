@@ -21,6 +21,5 @@ public static class ServiceCollectionExtensions
 		})
 		.AddTransient<IBrandRepository, BrandRepository>()
 		.AddTransient<IGameWagerStatCloseRepository, GameWagerStatCloseRepository>()
-		.AddTransient<IGameWagerStatHourlyCloseRepository, GameWagerStatHourlyCloseRepository>()
-		.AddTransient<IGameWagerStatHourlyZoneCloseRepository, GameWagerStatHourlyZoneCloseRepository>();
+		.AddTransient<IGameWagerStatHourlyCloseRepository, GameWagerStatHourlyCloseRepository>();
 }

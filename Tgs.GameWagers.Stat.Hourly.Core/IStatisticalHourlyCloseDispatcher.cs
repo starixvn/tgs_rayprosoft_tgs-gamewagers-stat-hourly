@@ -4,5 +4,5 @@ namespace Tgs.GameWagers.Stat.Hourly.Core;
 
 public interface IStatisticalHourlyCloseDispatcher
 {
-	ValueTask PushCommandAsync(StatHourlyCloseCommand command, CancellationToken cancellationToken = default);
+	ValueTask PushRequestAsync(StatHourlyCloseRequest request, CancellationToken cancellationToken = default);
 }

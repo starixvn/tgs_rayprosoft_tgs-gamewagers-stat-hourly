@@ -1,19 +1,17 @@
-﻿using Tgs.GameWagers.Stat.Hourly.Core.JobApplicationServices;
-using Tgs.ServiceUtility;
+﻿using MediatR;
+using Tgs.GameWagers.Stat.Hourly.Core.JobApplicationServices;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core;
 
 internal class HangfireUtensil(
-	ICommandService<JobCheckCommand> jobCheckService,
-	ICommandService<JobExecuteCommand> jobExecuteService,
-	ICommandService<JobInitCommand> jobInitservice) : IHangfireUtensil
+	IMediator mediator) : IHangfireUtensil
 {
 	public Task JobCheckAsync()
-		=> jobCheckService.ExecuteAsync(new()).AsTask();
+		=> mediator.Send(new JobCheckRequest());
 
-	public Task JobExecuteAsync(JobExecuteCommand source)
-		=> jobExecuteService.ExecuteAsync(source).AsTask();
+	public Task JobExecuteAsync(JobExecuteRequest source)
+		=> mediator.Send(source);
 
 	public Task JobInitAsync()
-		=> jobInitservice.ExecuteAsync(new()).AsTask();
+		=> mediator.Send(new JobInitRequest());
 }

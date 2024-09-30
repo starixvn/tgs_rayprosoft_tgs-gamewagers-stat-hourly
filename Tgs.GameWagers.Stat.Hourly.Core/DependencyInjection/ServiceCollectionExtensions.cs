@@ -10,14 +10,11 @@ public static class ServiceCollectionExtensions
 		this IServiceCollection services,
 		Func<IServiceProvider, IDatabase> redisDatabaseResolver)
 		=> services
-		.RegisterAllServiceUtilityTypes(
-			Assembly.GetExecutingAssembly(),
-			ServiceLifetime.Transient)
+		.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
 		.AddSingleton(TimeProvider.System)
 		.AddSingleton<IHangfireLock>(sp => ActivatorUtilities.CreateInstance<HangfireLock>(sp, redisDatabaseResolver(sp)))
 		.AddScoped<IHangfireUtensil, HangfireUtensil>()
 		.AddSingleton<IStatisticalHourlyCloseDispatcher, StatisticalHourlyCloseDispatcher>()
-		.AddSingleton<IStatisticalHourlyZoneCloseDispatcher, StatisticalHourlyZoneCloseDispatcher>()
 		.AddSingleton<IStatisticalTimeUtnsil, StatisticalTimeUtnsil>()
 		.AddSingleton<IDateTimeOffsetUtensil, DateTimeOffsetUtensil>();
 }

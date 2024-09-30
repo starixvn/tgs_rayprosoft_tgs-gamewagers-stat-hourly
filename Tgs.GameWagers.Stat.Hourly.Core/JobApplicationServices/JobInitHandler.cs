@@ -1,32 +1,38 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using Hangfire;
 using Hangfire.Storage;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using Tgs.GameWagers.Stat.Hourly.Core.Models;
-using Tgs.ServiceUtility;
 
 namespace Tgs.GameWagers.Stat.Hourly.Core.JobApplicationServices;
 
-internal class JobInitCommandService(
-	ILogger<JobInitCommandService> logger,
+internal class JobInitHandler(
+	ILogger<JobInitHandler> logger,
 	IHangfireLock hangfireLock,
-	IBrandRepository repository) : ICommandService<JobInitCommand>
+	IBrandRepository repository) : IRequestHandler<JobInitRequest>
 {
 	private readonly RecurringJobOptions _recurringJobOptions = new()
 	{
 		TimeZone = TimeZoneInfo.FindSystemTimeZoneById(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "China Standard Time" : "Asia/Shanghai")
 	};
 
-	public async ValueTask ExecuteAsync(JobInitCommand command, CancellationToken cancellationToken = default)
+	public async Task Handle(JobInitRequest request, CancellationToken cancellationToken)
 	{
 		try
 		{
 			if (!await hangfireLock.LockingAsync(
-				application: typeof(JobInitCommandService).Name,
+				application: typeof(JobInitHandler).Name,
 				cancellationToken: cancellationToken)
 				.ConfigureAwait(false))
 			{
-				logger.LogWarning("LogOn:{logOn} Message:進行初始化動作，已經有其他服務進行", DateTime.Now.ToString("o"));
+				logger.LogWarning("{logWarning}",
+					JsonSerializer.Serialize(new
+					{
+						LogOn = DateTime.Now.ToString("u"),
+						Message = "Perform initialization actions, and other services are already in progress."
+					}));
 				return;
 			}
 
@@ -47,17 +53,16 @@ internal class JobInitCommandService(
 
 			foreach (var brand in brands)
 			{
-				var jobExecuteCommand = new JobExecuteCommand(
+				var jobExecuteCommand = new JobExecuteRequest(
 					ResellerId: brand.ResellerId,
 					ResellerCode: brand.ResellerCode,
 					LicenseeId: brand.LicenseeId,
 					LicenseeCode: brand.LicenseeCode,
 					BrandId: brand.BrandId,
-					BrandCode: brand.BrandCode,
-					TimeSpanMinutes: brand.TimeSpanMinutes);
+					BrandCode: brand.BrandCode);
 
 				RecurringJob.AddOrUpdate<IHangfireUtensil>(
-					recurringJobId: $"{brand.ResellerCode}|{brand.LicenseeCode}|{brand.BrandCode}|{brand.TimeSpanMinutes}",
+					recurringJobId: $"{brand.ResellerCode}|{brand.LicenseeCode}|{brand.BrandCode}",
 					methodCall: service => service.JobExecuteAsync(jobExecuteCommand),
 					cronExpression: "*/5 * * * *",
 					options: _recurringJobOptions);
@@ -65,7 +70,13 @@ internal class JobInitCommandService(
 		}
 		catch (Exception ex)
 		{
-			logger.LogError(ex, "LogOn:{logOn} Message:初始化排程發生例外", DateTime.Now.ToString("o"));
+			logger.LogError(ex, "{logError}",
+				JsonSerializer.Serialize(new
+				{
+					LogOn = DateTime.Now.ToString("u"),
+					Message = "An exception occurred during the initialization schedule."
+				}));
+			return;
 		}
 		finally
 		{

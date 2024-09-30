@@ -91,14 +91,12 @@ builder.Services
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
 	.AddHandler<StatHourlyBrandMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyBrand, typeof(StatHourlyBrandMessageHandler).FullName!.ToLower())
 	.AddHandler<StatHourlyBrandsMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyBrands, typeof(StatHourlyBrandsMessageHandler).FullName!.ToLower())
-	.AddHandler<StatHourlyCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatHourlyCloseMessageHandler).FullName!.ToLower())
-	.AddHandler<StatHourlyZoneCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatHourlyZoneCloseMessageHandler).FullName!.ToLower()))
+	.AddHandler<StatHourlyCloseMessageHandler>(GameWagersStatHourlyNatsConst.StatHourlyClose, typeof(StatHourlyCloseMessageHandler).FullName!.ToLower()))
 	.ClearAllExchanges()
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyBrand)
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyBrands)
 	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyClose)
-	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyCloseFinish)
-	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyCloseZoneFinish);
+	.AddNatsGlobPatternExchange(GameWagersStatHourlyNatsConst.StatHourlyCloseFinish);
 
 builder.Services
 	.AddOpenTelemetry()
@@ -108,6 +106,7 @@ builder.Services
 		.AddSource("Tgs.*")
 		.AddSource("TGS.*")
 		.AddSource("Valhalla.*")
+		.AddSource("MediatR")
 		.AddAspNetCoreInstrumentation(options => options.Filter =
 			httpContext => !httpContext.Request.Path.HasValue
 			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
@@ -126,10 +125,7 @@ builder.Services
 		.AddEnvironmentVariableDetector())
 		.AddRuntimeInstrumentation()
 		.AddAspNetCoreInstrumentation()
-		.AddOtlpExporter())
-	.Services
-	.AddInterceptionService()
-	.AddServiceUtiltiyInterceptors();
+		.AddOtlpExporter());
 
 builder.Services.AddHealthChecks();
 
@@ -143,10 +139,9 @@ app.UseHangfireDashboard(
 	new DashboardOptions()
 	{
 		Authorization =
-		new[]
-		{
+		[
 			new IgnoreHangfireAuthorizationFilter()
-		}
+		]
 	});
 
 _ = app.UseAuthorization();

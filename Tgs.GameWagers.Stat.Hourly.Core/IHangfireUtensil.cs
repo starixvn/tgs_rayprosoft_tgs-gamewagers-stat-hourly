@@ -6,7 +6,7 @@ public interface IHangfireUtensil
 {
 	public Task JobCheckAsync();
 
-	public Task JobExecuteAsync(JobExecuteCommand source);
+	public Task JobExecuteAsync(JobExecuteRequest source);
 
 	public Task JobInitAsync();
 }
