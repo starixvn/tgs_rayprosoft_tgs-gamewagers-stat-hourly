@@ -18,7 +18,7 @@ internal class StatisticalHourlyCloseDispatcher(IServiceProvider serviceProvider
 
 	public async ValueTask PushRequestAsync(StatHourlyCloseRequest request, CancellationToken cancellationToken = default)
 	{
-		var key = request.BrandCode;
+		var key = "dispatcher";
 		using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
 		var counter = _counters.GetOrAdd(
 			key,
@@ -39,7 +39,7 @@ internal class StatisticalHourlyCloseDispatcher(IServiceProvider serviceProvider
 			});
 
 		await counter.PrepareAsync(cts.Token).ConfigureAwait(false);
-		await counter.PushCommandAsync(request, cts.Token).ConfigureAwait(false);
+		await counter.PushRequestAsync(request, cts.Token).ConfigureAwait(false);
 	}
 
 	public ValueTask DisposeAsync()
